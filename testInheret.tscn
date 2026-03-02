@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://bmd3is500gaw"]
+
+[ext_resource type="PackedScene" uid="uid://bkrltcif54ujh" path="res://gltfs/Untitled.gltf" id="1_6viyp"]
+
+[node name="Untitled" unique_id=2077244224 instance=ExtResource("1_6viyp")]
+
+[node name="Cube" parent="." index="0" unique_id=600947502]
+transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, 0, 0)

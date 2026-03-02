@@ -1,0 +1,56 @@
+[gd_scene format=3 uid="uid://b4qbi5wo2o4g2"]
+
+[ext_resource type="Script" uid="uid://5tsxj2gavqfn" path="res://classes/Baker.gd" id="1_ia73o"]
+[ext_resource type="Script" uid="uid://buqkdsglachok" path="res://classes/Creator.gd" id="2_j1vrw"]
+[ext_resource type="PackedScene" uid="uid://cmbxadjn6kp3" path="res://gltfs/Untitled2.gltf" id="2_ml37p"]
+[ext_resource type="PackedScene" uid="uid://bkrltcif54ujh" path="res://gltfs/Untitled.gltf" id="3_j1vrw"]
+[ext_resource type="BoxMesh" uid="uid://8iclnpxgysj8" path="res://Base_creation_material.tres" id="4_e6v0q"]
+[ext_resource type="Script" uid="uid://olorsgowbwgq" path="res://Target.gd" id="6_e6v0q"]
+[ext_resource type="Texture2D" uid="uid://bfx12selscvgq" path="res://textures/citrus_orchard_puresky_2k.exr" id="6_vfkme"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_e6v0q"]
+panorama = ExtResource("6_vfkme")
+
+[sub_resource type="Sky" id="Sky_t1fpa"]
+sky_material = SubResource("PanoramaSkyMaterial_e6v0q")
+
+[sub_resource type="Environment" id="Environment_1edov"]
+background_mode = 2
+background_energy_multiplier = 0.3
+sky = SubResource("Sky_t1fpa")
+
+[node name="Node3D" type="Node3D" unique_id=1595056590]
+
+[node name="baker" type="Node3D" parent="." unique_id=2089916458 node_paths=PackedStringArray("creator", "target")]
+script = ExtResource("1_ia73o")
+creator = NodePath("../creator")
+target = NodePath("../Target")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1353930547]
+transform = Transform3D(0.8481683, 0, -0.5297268, 0, 1, 0, 0.5297268, 0, 0.8481683, -5.8566504, 3.043, 4.616)
+fov = 123.5
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1930909081]
+transform = Transform3D(1, 0, 0, 0, 0.5863865, 0.8100315, 0, -0.8100315, 0.5863865, 0, 0, 12.670316)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1556506300]
+environment = SubResource("Environment_1edov")
+
+[node name="Target" type="Node3D" parent="." unique_id=1691935409]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
+script = ExtResource("6_e6v0q")
+
+[node name="Skeleton3D" type="Skeleton3D" parent="Target" unique_id=1096565119]
+
+[node name="Target_mesh" type="MeshInstance3D" parent="Target/Skeleton3D" unique_id=1210599835]
+transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, 0, 0)
+mesh = ExtResource("4_e6v0q")
+
+[node name="creator" type="Node3D" parent="." unique_id=1933058923]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
+script = ExtResource("2_j1vrw")
+
+[node name="Untitled2" parent="creator" unique_id=2094855226 instance=ExtResource("2_ml37p")]
+transform = Transform3D(1, 0, 0, 0, 0.7993492, -0.6008668, 0, 0.6008668, 0.7993492, 0, 2, 0)
+
+[node name="Untitled" parent="creator" unique_id=2077244224 instance=ExtResource("3_j1vrw")]
