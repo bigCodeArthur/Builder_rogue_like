@@ -11,11 +11,6 @@ var st : SurfaceTool = SurfaceTool.new()
 @onready var target_mesh: MeshInstance3D = $"../Target/Skeleton3D/Target_mesh"
 
 
-func _physics_process(delta: float) -> void:
-	creator.rotate(Vector3.UP, delta)
-	target.rotate(Vector3.UP, delta)
-
-
 func bake() -> void:
 	var meshes: Array[Mesh] = []
 	var transforms: Array[Transform3D] = []
