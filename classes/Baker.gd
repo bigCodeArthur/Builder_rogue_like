@@ -27,7 +27,7 @@ func bake() -> void:
 
 func bake_segment_to_bone(
 	c_meshes: Array[Mesh], 
-	c_transforms : Array[Transform3D], 
+	c_transforms: Array[Transform3D], 
 	bone_id: int
 ) -> ArrayMesh:
 	var offset := creator.global_transform.affine_inverse()

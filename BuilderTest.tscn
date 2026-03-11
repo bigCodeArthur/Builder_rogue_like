@@ -33,10 +33,13 @@ environment = SubResource("Environment_1edov")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment" unique_id=1930909081]
 transform = Transform3D(1, 0, 0, 0, 0.5863865, 0.8100315, 0, -0.8100315, 0.5863865, 0, 0, 12.670316)
 
-[node name="Pivot" type="Node3D" parent="Environment" unique_id=1101434984]
+[node name="Pivot_y" type="Node3D" parent="Environment" unique_id=305353108]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -20, 0)
 
-[node name="Camera3D" type="Camera3D" parent="Environment/Pivot" unique_id=1353930547]
-transform = Transform3D(0.8481683, 0, -0.5297268, 0, 1, 0, 0.5297268, 0, 0.8481683, -5.8566504, 3.043, 4.616)
+[node name="Pivot_x" type="Node3D" parent="Environment/Pivot_y" unique_id=1101434984]
+
+[node name="Camera3D" type="Camera3D" parent="Environment/Pivot_y/Pivot_x" unique_id=1353930547]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
 fov = 123.5
 script = ExtResource("2_t1fpa")
 
@@ -49,7 +52,7 @@ script = ExtResource("6_e6v0q")
 transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, 0, 0)
 
 [node name="creator" type="Node3D" parent="." unique_id=1933058923]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -20, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -100, 0)
 script = ExtResource("2_j1vrw")
 
 [node name="Untitled2" parent="creator" unique_id=2094855226 instance=ExtResource("2_ml37p")]
