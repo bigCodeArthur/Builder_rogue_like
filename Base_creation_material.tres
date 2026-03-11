@@ -1,7 +1,6 @@
-[gd_resource type="BoxMesh" format=3 uid="uid://8iclnpxgysj8"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wx73e"]
-vertex_color_use_as_albedo = true
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://brvlbsaj0tib6"]
 
 [resource]
-material = SubResource("StandardMaterial3D_wx73e")
+vertex_color_use_as_albedo = true
+roughness = 0.2
+clearcoat_enabled = true

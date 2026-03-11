@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://b4qbi5wo2o4g2"]
 
-[ext_resource type="Script" uid="uid://5tsxj2gavqfn" path="res://classes/Baker.gd" id="1_ia73o"]
+[ext_resource type="Script" uid="uid://do1ndi52fhc2b" path="res://baker_api.gd" id="1_e6v0q"]
 [ext_resource type="Script" uid="uid://buqkdsglachok" path="res://classes/Creator.gd" id="2_j1vrw"]
 [ext_resource type="PackedScene" uid="uid://cmbxadjn6kp3" path="res://gltfs/Untitled2.gltf" id="2_ml37p"]
+[ext_resource type="Script" uid="uid://cnubn2qlk5sw" path="res://camera_3d.gd" id="2_t1fpa"]
 [ext_resource type="PackedScene" uid="uid://bkrltcif54ujh" path="res://gltfs/Untitled.gltf" id="3_j1vrw"]
-[ext_resource type="BoxMesh" uid="uid://8iclnpxgysj8" path="res://Base_creation_material.tres" id="4_e6v0q"]
 [ext_resource type="Script" uid="uid://olorsgowbwgq" path="res://Target.gd" id="6_e6v0q"]
 [ext_resource type="Texture2D" uid="uid://bfx12selscvgq" path="res://textures/citrus_orchard_puresky_2k.exr" id="6_vfkme"]
 
@@ -19,38 +19,61 @@ background_mode = 2
 background_energy_multiplier = 0.3
 sky = SubResource("Sky_t1fpa")
 
-[node name="Node3D" type="Node3D" unique_id=1595056590]
+[node name="Main" type="Node3D" unique_id=1595056590]
 
-[node name="baker" type="Node3D" parent="." unique_id=2089916458 node_paths=PackedStringArray("creator", "target")]
-script = ExtResource("1_ia73o")
+[node name="Baker" type="Node" parent="." unique_id=953020490 node_paths=PackedStringArray("creator", "target")]
+script = ExtResource("1_e6v0q")
 creator = NodePath("../creator")
 target = NodePath("../Target")
+metadata/_custom_type_script = "uid://5tsxj2gavqfn"
 
-[node name="Camera3D" type="Camera3D" parent="." unique_id=1353930547]
-transform = Transform3D(0.8481683, 0, -0.5297268, 0, 1, 0, 0.5297268, 0, 0.8481683, -5.8566504, 3.043, 4.616)
-fov = 123.5
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1930909081]
-transform = Transform3D(1, 0, 0, 0, 0.5863865, 0.8100315, 0, -0.8100315, 0.5863865, 0, 0, 12.670316)
-
-[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1556506300]
+[node name="Environment" type="WorldEnvironment" parent="." unique_id=1556506300]
 environment = SubResource("Environment_1edov")
 
+[node name="Camera3D" type="Camera3D" parent="Environment" unique_id=1353930547]
+transform = Transform3D(0.8481683, 0, -0.5297268, 0, 1, 0, 0.5297268, 0, 0.8481683, -5.8566504, 3.043, 4.616)
+fov = 123.5
+script = ExtResource("2_t1fpa")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment" unique_id=1930909081]
+transform = Transform3D(1, 0, 0, 0, 0.5863865, 0.8100315, 0, -0.8100315, 0.5863865, 0, 0, 12.670316)
+
 [node name="Target" type="Node3D" parent="." unique_id=1691935409]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0)
 script = ExtResource("6_e6v0q")
 
 [node name="Skeleton3D" type="Skeleton3D" parent="Target" unique_id=1096565119]
 
 [node name="Target_mesh" type="MeshInstance3D" parent="Target/Skeleton3D" unique_id=1210599835]
 transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, 0, 0)
-mesh = ExtResource("4_e6v0q")
 
 [node name="creator" type="Node3D" parent="." unique_id=1933058923]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -20, 0)
 script = ExtResource("2_j1vrw")
 
 [node name="Untitled2" parent="creator" unique_id=2094855226 instance=ExtResource("2_ml37p")]
 transform = Transform3D(1, 0, 0, 0, 0.7993492, -0.6008668, 0, 0.6008668, 0.7993492, 0, 2, 0)
 
 [node name="Untitled" parent="creator" unique_id=2077244224 instance=ExtResource("3_j1vrw")]
+
+[node name="UI" type="Control" parent="." unique_id=1276930379]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button" type="Button" parent="UI" unique_id=1995851184]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.46100003
+anchor_top = 1.0
+anchor_right = 0.541
+anchor_bottom = 1.0
+offset_left = -0.072021484
+offset_top = -52.0
+offset_right = -0.23199463
+offset_bottom = -21.0
+text = "BAKE"
+
+[connection signal="pressed" from="UI/Button" to="Baker" method="_on_button_pressed"]

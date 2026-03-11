@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://c2g2b4ktpb3l"]
+
+[ext_resource type="Script" uid="uid://b21od8fbvbvbn" path="res://character_body_3d.gd" id="1_mgp7t"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ukhfh"]
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_mgp7t"]
+
+[node name="PlayTest" type="Node3D" unique_id=1628897284]
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="." unique_id=2038772913]
+script = ExtResource("1_mgp7t")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D" unique_id=88785355]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_ukhfh")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D" unique_id=246611166]
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=898509397]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 5)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=88518545]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=687589570]
+shape = SubResource("WorldBoundaryShape3D_mgp7t")

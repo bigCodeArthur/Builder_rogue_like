@@ -1,33 +1,14 @@
-class_name Baker extends Node3D
+class_name Baker extends Node
 
-@export var creator : Creator
-@export var target : Target
+const BASE_CREATION_MATERIAL = preload("uid://brvlbsaj0tib6")
 
 var dt : MeshDataTool = MeshDataTool.new()
 var st : SurfaceTool = SurfaceTool.new()
 
+@export var creator : Creator
+@export var target : Target
+
 @onready var target_mesh: MeshInstance3D = $"../Target/Skeleton3D/Target_mesh"
-
-func bake() -> ArrayMesh:
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var skeleton := Skeleton3D.new()
-	var joints : Array[Joint] = find_children("", "Joint") as Array[Joint]
-	var meshes = creator.find_children("", "MeshInstance3D", true, false)
-
-	for joint in joints: bake_segment_to_bone(meshes, skeleton.add_bone(joint.bone_name))
-
-	return ArrayMesh.new()
-
-
-func _ready() -> void:
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	var meshes = creator.find_children("", "MeshInstance3D", true, false)
-	target.set_mesh(bake_segment_to_bone(meshes, 0))
-
-	var gltf_doc = GLTFDocument.new()
-	var gltf_state = GLTFState.new()
-	gltf_doc.append_from_scene(target, gltf_state)
-	gltf_doc.write_to_filesystem(gltf_state, "res://gltfs/test.glb")
 
 
 func _physics_process(delta: float) -> void:
@@ -35,25 +16,53 @@ func _physics_process(delta: float) -> void:
 	target.rotate(Vector3.UP, delta)
 
 
-## turn a group of meshes into a single one, 
-## with the influence of a single given bone.
-func bake_segment_to_bone(meshes: Array, bone_id: int) -> ArrayMesh:
-	var creator_inverse := creator.global_transform.affine_inverse()
-	for mesh_instance in meshes as Array[MeshInstance3D]:
-		var offset := creator_inverse * mesh_instance.global_transform
-		var normal_mat := offset.basis.inverse().transposed()
-		dt.create_from_surface(mesh_instance.mesh as ArrayMesh, 0)
-		st.set_material(target_mesh.mesh.material)
-		# go through each tri and through each vertex of that tri
-		for face in dt.get_face_count(): for corner in 3:
-			var vert := dt.get_face_vertex(face, corner)
-			var new_normal := normal_mat * dt.get_vertex_normal(vert)
-			var new_vertex := offset * dt.get_vertex(vert)
-			st.set_color(Color(0.0, 0.523, 0.33, 1.0)) # test value
-			st.set_bones(PackedInt32Array([bone_id, 0, 0, 0]))
-			st.set_weights(PackedFloat32Array([1, 0, 0, 0]))
-			st.set_uv(dt.get_vertex_uv(vert))
-			st.set_normal(new_normal.normalized())
-			st.add_vertex(new_vertex)
+func bake() -> void:
+	var meshes: Array[Mesh] = []
+	var transforms: Array[Transform3D] = []
+
+	for instance in creator.find_children("", "MeshInstance3D", true, false):
+		if instance is MeshInstance3D:
+			meshes.append(instance.mesh)
+			transforms.append(instance.global_transform)
+
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	target.set_mesh(bake_segment_to_bone(meshes, transforms, 0))
+	Helper.save_as_gltf(target)
+
+
+func bake_segment_to_bone(
+	c_meshes: Array[Mesh], 
+	c_transforms : Array[Transform3D], 
+	bone_id: int
+) -> ArrayMesh:
+	var offset := creator.global_transform.affine_inverse()
+	for m in c_meshes.size(): bake_mesh_to_bone(c_meshes[m], c_transforms[m], bone_id, offset)
 	st.generate_tangents()
 	return st.commit()
+
+
+func bake_mesh_to_bone(
+	c_mesh: Mesh, 
+	c_transform: Transform3D,
+	bone_id: int, 
+	offset: Transform3D
+) -> void:
+	var position_offset := offset * c_transform
+	var normal_offset := position_offset.basis.inverse().transposed()
+	var color := Color(0.219, 0.308, 0.076, 1.0)
+
+	dt.create_from_surface(c_mesh as ArrayMesh, 0)
+	st.set_material(BASE_CREATION_MATERIAL)
+
+	# go through each tri and through each vertex of that tri
+	for face in dt.get_face_count(): for corner_index in 3:
+		var vert := dt.get_face_vertex(face, corner_index)
+		var new_normal := normal_offset * dt.get_vertex_normal(vert)
+		var new_vertex := position_offset * dt.get_vertex(vert)
+		
+		st.set_color(color) # test value
+		st.set_bones(PackedInt32Array([bone_id, 0, 0, 0]))
+		st.set_weights(PackedFloat32Array([1, 0, 0, 0]))
+		st.set_uv(dt.get_vertex_uv(vert))
+		st.set_normal(new_normal.normalized())
+		st.add_vertex(new_vertex)

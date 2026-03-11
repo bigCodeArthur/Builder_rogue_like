@@ -1,11 +1,12 @@
 class_name Target extends Node3D
 
-@onready var target_mesh_instance: MeshInstance3D = $Skeleton3D/Target_mesh
+@onready var mesh: MeshInstance3D = $Skeleton3D/Target_mesh
+@onready var skeleton: Skeleton3D = $Skeleton3D
 
 
 func set_mesh(value : Mesh) -> void:
-	find_child("Target_mesh").mesh = value
+	mesh.mesh = value
 
 
 func get_mesh() -> Mesh:
-	return target_mesh_instance.mesh
+	return mesh.mesh

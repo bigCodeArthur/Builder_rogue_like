@@ -3,13 +3,13 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://cr4vhtatlvskf"
-path="res://.godot/imported/test.glb-b9a13a77af55fdbe6703814b031ce695.scn"
+uid="uid://mwdemdriilvr"
+path="res://.godot/imported/basic_joint.glb-d8f0f92b3254975e0c895ca778c3a7ab.scn"
 
 [deps]
 
-source_file="res://gltfs/test.glb"
-dest_files=["res://.godot/imported/test.glb-b9a13a77af55fdbe6703814b031ce695.scn"]
+source_file="res://gltfs/basic_joint.glb"
+dest_files=["res://.godot/imported/basic_joint.glb-d8f0f92b3254975e0c895ca778c3a7ab.scn"]
 
 [params]
 
