@@ -1,12 +1,14 @@
 [gd_scene format=3 uid="uid://b4qbi5wo2o4g2"]
 
-[ext_resource type="Script" uid="uid://do1ndi52fhc2b" path="res://baker_api.gd" id="1_e6v0q"]
+[ext_resource type="Script" uid="uid://5tsxj2gavqfn" path="res://classes/Baker.gd" id="1_e6v0q"]
 [ext_resource type="Script" uid="uid://buqkdsglachok" path="res://classes/Creator.gd" id="2_j1vrw"]
 [ext_resource type="PackedScene" uid="uid://cmbxadjn6kp3" path="res://gltfs/Untitled2.gltf" id="2_ml37p"]
 [ext_resource type="Script" uid="uid://cnubn2qlk5sw" path="res://camera_3d.gd" id="2_t1fpa"]
 [ext_resource type="PackedScene" uid="uid://bkrltcif54ujh" path="res://gltfs/Untitled.gltf" id="3_j1vrw"]
 [ext_resource type="Script" uid="uid://olorsgowbwgq" path="res://Target.gd" id="6_e6v0q"]
 [ext_resource type="Texture2D" uid="uid://bfx12selscvgq" path="res://textures/citrus_orchard_puresky_2k.exr" id="6_vfkme"]
+[ext_resource type="Script" uid="uid://bq5hx04k73p15" path="res://mode_switch.gd" id="8_t1fpa"]
+[ext_resource type="PackedScene" uid="uid://cwxxg2kuk7jai" path="res://gltfs/editor_space.glb" id="9_1edov"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_e6v0q"]
 panorama = ExtResource("6_vfkme")
@@ -18,6 +20,11 @@ sky_material = SubResource("PanoramaSkyMaterial_e6v0q")
 background_mode = 2
 background_energy_multiplier = 0.3
 sky = SubResource("Sky_t1fpa")
+ssr_enabled = true
+ssao_enabled = true
+ssil_enabled = true
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_e6v0q"]
 
 [node name="Main" type="Node3D" unique_id=1595056590]
 
@@ -34,16 +41,24 @@ environment = SubResource("Environment_1edov")
 transform = Transform3D(1, 0, 0, 0, 0.5863865, 0.8100315, 0, -0.8100315, 0.5863865, 0, 0, 12.670316)
 
 [node name="Pivot_y" type="Node3D" parent="Environment" unique_id=305353108]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -20, 0)
+transform = Transform3D(0.7547096, 0, 0.656059, 0, 1, 0, -0.656059, 0, 0.7547096, 0, 0, 0)
 
 [node name="Pivot_x" type="Node3D" parent="Environment/Pivot_y" unique_id=1101434984]
+transform = Transform3D(1, 0, 0, 0, 0.83867055, 0.54463905, 0, -0.54463905, 0.83867055, 0, 0, 0)
 
 [node name="Camera3D" type="Camera3D" parent="Environment/Pivot_y/Pivot_x" unique_id=1353930547]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
-fov = 123.5
 script = ExtResource("2_t1fpa")
 
+[node name="StaticBody3D" type="StaticBody3D" parent="Environment" unique_id=756412017]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/StaticBody3D" unique_id=1903640723]
+shape = SubResource("WorldBoundaryShape3D_e6v0q")
+
+[node name="editor_space" parent="Environment" unique_id=283607448 instance=ExtResource("9_1edov")]
+
 [node name="Target" type="Node3D" parent="." unique_id=1691935409]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 100, 0)
 script = ExtResource("6_e6v0q")
 
 [node name="Skeleton3D" type="Skeleton3D" parent="Target" unique_id=1096565119]
@@ -52,13 +67,13 @@ script = ExtResource("6_e6v0q")
 transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, 0, 0)
 
 [node name="creator" type="Node3D" parent="." unique_id=1933058923]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -100, 0)
 script = ExtResource("2_j1vrw")
 
 [node name="Untitled2" parent="creator" unique_id=2094855226 instance=ExtResource("2_ml37p")]
-transform = Transform3D(1, 0, 0, 0, 0.7993492, -0.6008668, 0, 0.6008668, 0.7993492, 0, 2, 0)
+transform = Transform3D(1, 0, 0, 0, 0.7993492, -0.6008668, 0, 0.6008668, 0.7993492, 0, 3, 0)
 
 [node name="Untitled" parent="creator" unique_id=2077244224 instance=ExtResource("3_j1vrw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 
 [node name="UI" type="Control" parent="." unique_id=1276930379]
 layout_mode = 3
@@ -68,17 +83,20 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Button" type="Button" parent="UI" unique_id=1995851184]
+[node name="ModeSwitch" type="Button" parent="UI" unique_id=1671697771]
 layout_mode = 1
 anchors_preset = -1
-anchor_left = 0.46100003
+anchor_left = 1.0
 anchor_top = 1.0
-anchor_right = 0.541
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -0.072021484
-offset_top = -52.0
-offset_right = -0.23199463
-offset_bottom = -21.0
-text = "BAKE"
+offset_left = -105.0
+offset_top = -61.0
+offset_right = -16.0
+offset_bottom = -13.0
+toggle_mode = true
+text = "animator"
+script = ExtResource("8_t1fpa")
 
-[connection signal="pressed" from="UI/Button" to="Baker" method="_on_button_pressed"]
+[connection signal="toggled" from="UI/ModeSwitch" to="Environment/Pivot_y/Pivot_x/Camera3D" method="_on_mode_switch_toggled"]
+[connection signal="toggled" from="UI/ModeSwitch" to="UI/ModeSwitch" method="_on_toggled"]

@@ -7,7 +7,7 @@ var st : SurfaceTool = SurfaceTool.new()
 
 @export var creator : Creator
 @export var target : Target
-
+@onready var skeleton : Skeleton3D = $"../Target/Skeleton3D"
 @onready var target_mesh: MeshInstance3D = $"../Target/Skeleton3D/Target_mesh"
 
 
