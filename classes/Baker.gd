@@ -7,21 +7,36 @@ var st : SurfaceTool = SurfaceTool.new()
 
 @export var creator : Creator
 @export var target : Target
+
 @onready var skeleton : Skeleton3D = $"../Target/Skeleton3D"
 @onready var target_mesh: MeshInstance3D = $"../Target/Skeleton3D/Target_mesh"
 
 
+class Segment extends Object:
+	var meshes: Array[Mesh]
+	var transforms: Array[Transform3D]
+
+	func _init(in_meshes: Array[Mesh] = [], in_transforms: Array[Transform3D] = []) -> void:
+		meshes = in_meshes
+		transforms = in_transforms
+
+	func append(m: Mesh, t: Transform3D) -> void:
+		meshes.append(m)
+		transforms.append(t)
+
+	func size() -> int:
+		return meshes.size()
+
+
 func bake() -> void:
-	var meshes: Array[Mesh] = []
-	var transforms: Array[Transform3D] = []
+	var segment : Segment = Segment.new()
 
 	for instance in creator.find_children("", "MeshInstance3D", true, false):
-		if instance is MeshInstance3D:
-			meshes.append(instance.mesh)
-			transforms.append(instance.global_transform)
+		if instance is MeshInstance3D and not instance.mesh == null:
+			segment.append(instance.mesh, instance.global_transform)
 
 	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-	target.set_mesh(bake_segment_to_bone(meshes, transforms, 0))
+	target.set_mesh(bake_segment_to_bone(segment.meshes, segment.transforms, 0))
 	Helper.save_as_gltf(target)
 
 
@@ -54,8 +69,8 @@ func bake_mesh_to_bone(
 		var vert := dt.get_face_vertex(face, corner_index)
 		var new_normal := normal_offset * dt.get_vertex_normal(vert)
 		var new_vertex := position_offset * dt.get_vertex(vert)
-		
-		st.set_color(color) # test value
+
+		st.set_color(color) # TODO: test value
 		st.set_bones(PackedInt32Array([bone_id, 0, 0, 0]))
 		st.set_weights(PackedFloat32Array([1, 0, 0, 0]))
 		st.set_uv(dt.get_vertex_uv(vert))

@@ -22,7 +22,6 @@ background_energy_multiplier = 0.3
 sky = SubResource("Sky_t1fpa")
 ssr_enabled = true
 ssao_enabled = true
-ssil_enabled = true
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_e6v0q"]
 
