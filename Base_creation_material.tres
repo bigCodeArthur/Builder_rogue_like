@@ -2,5 +2,8 @@
 
 [resource]
 vertex_color_use_as_albedo = true
-roughness = 0.2
+vertex_color_is_srgb = true
+metallic = 1.0
+roughness = 0.0
 clearcoat_enabled = true
+clearcoat_roughness = 0.0

@@ -15,6 +15,10 @@ run/main_scene="uid://b4qbi5wo2o4g2"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
+[filesystem]
+
+import/blender/enabled=false
+
 [input]
 
 cam_move={
@@ -45,3 +49,5 @@ shift={
 [rendering]
 
 rendering_device/driver.windows="d3d12"
+environment/screen_space_reflection/half_size=false
+anti_aliasing/quality/screen_space_aa=1
