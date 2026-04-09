@@ -12,6 +12,10 @@ var cam_pan : bool = false
 @onready var baker: Baker = $"../../../../Baker"
 
 
+func _ready() -> void:
+	pivot_y.position = creator_pos
+	editor_space.position = creator_pos
+
 func _process(_delta: float) -> void:
 	if Input.is_action_pressed("cam_move"):
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
