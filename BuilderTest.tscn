@@ -21,7 +21,6 @@ background_mode = 2
 background_energy_multiplier = 0.2
 sky = SubResource("Sky_t1fpa")
 ssr_enabled = true
-ssao_enabled = true
 ssao_radius = 2.74
 ssao_intensity = 16.0
 ssao_power = 0.36222616
