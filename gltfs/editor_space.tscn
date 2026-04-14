@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://ckufxi4lvaifi"]
+
+[ext_resource type="PackedScene" uid="uid://cwxxg2kuk7jai" path="res://gltfs/editor_space.glb" id="1_nhd6v"]
+
+[node name="editor_space" unique_id=283607448 instance=ExtResource("1_nhd6v")]
+
+[node name="floor" parent="." index="0" unique_id=331198440]
+layers = 2
+
+[node name="walls" parent="." index="1" unique_id=119732465]
+layers = 2
+
+[node name="ReflectionProbe" type="ReflectionProbe" parent="walls" index="0" unique_id=280995144]
+transform = Transform3D(1, -2.980232e-08, 2.9802322e-08, 2.9802322e-08, 1, -5.9604645e-08, -2.9802322e-08, 5.9604645e-08, 1, 0, 30.17, 0)
+size = Vector3(150, 128.20557, 150)
+origin_offset = Vector3(0, -26.69, 0)
+cull_mask = 1048574

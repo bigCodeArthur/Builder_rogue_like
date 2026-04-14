@@ -5,10 +5,10 @@
 [ext_resource type="PackedScene" uid="uid://cmbxadjn6kp3" path="res://gltfs/Untitled2.gltf" id="2_ml37p"]
 [ext_resource type="Script" uid="uid://cnubn2qlk5sw" path="res://camera_3d.gd" id="2_t1fpa"]
 [ext_resource type="PackedScene" uid="uid://bkrltcif54ujh" path="res://gltfs/Untitled.gltf" id="3_j1vrw"]
+[ext_resource type="PackedScene" uid="uid://ckufxi4lvaifi" path="res://gltfs/editor_space.tscn" id="4_1edov"]
 [ext_resource type="Script" uid="uid://olorsgowbwgq" path="res://Target.gd" id="6_e6v0q"]
 [ext_resource type="Texture2D" uid="uid://bfx12selscvgq" path="res://textures/citrus_orchard_puresky_2k.exr" id="6_vfkme"]
 [ext_resource type="Script" uid="uid://bq5hx04k73p15" path="res://mode_switch.gd" id="8_t1fpa"]
-[ext_resource type="PackedScene" uid="uid://cwxxg2kuk7jai" path="res://gltfs/editor_space.glb" id="9_1edov"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_e6v0q"]
 panorama = ExtResource("6_vfkme")
@@ -60,15 +60,7 @@ script = ExtResource("2_t1fpa")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/StaticBody3D" unique_id=1903640723]
 shape = SubResource("WorldBoundaryShape3D_e6v0q")
 
-[node name="editor_space" parent="Environment" unique_id=283607448 instance=ExtResource("9_1edov")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -132.27338, 0)
-
-[node name="ReflectionProbe" type="ReflectionProbe" parent="Environment/editor_space" unique_id=129304040]
-transform = Transform3D(1, -2.980232e-08, 2.9802322e-08, 2.9802322e-08, 1, -5.9604645e-08, -2.9802322e-08, 5.9604645e-08, 1, -8.3140174e-07, 30.17035, 3.5701523e-06)
-size = Vector3(150, 128.20557, 150)
-origin_offset = Vector3(0, -27.69, 0)
-interior = true
-enable_shadows = true
+[node name="editor_space" parent="Environment" unique_id=283607448 instance=ExtResource("4_1edov")]
 
 [node name="Target" type="Node3D" parent="." unique_id=1691935409]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 100, 0)
