@@ -4,6 +4,6 @@
 vertex_color_use_as_albedo = true
 vertex_color_is_srgb = true
 metallic = 1.0
-roughness = 0.0
+roughness = 0.1
 clearcoat_enabled = true
-clearcoat_roughness = 0.0
+clearcoat_roughness = 0.1
