@@ -8,13 +8,12 @@
 [ext_resource type="Script" uid="uid://olorsgowbwgq" path="res://Target.gd" id="6_e6v0q"]
 [ext_resource type="Texture2D" uid="uid://bfx12selscvgq" path="res://textures/citrus_orchard_puresky_2k.exr" id="6_vfkme"]
 [ext_resource type="Script" uid="uid://do6m5yn4i3cnt" path="res://classes/Segment.gd" id="7_ig0lx"]
+[ext_resource type="Script" uid="uid://bqixp3wjpcfs5" path="res://skeleton_3d.gd" id="7_nrq47"]
 [ext_resource type="Script" uid="uid://bq5hx04k73p15" path="res://mode_switch.gd" id="8_t1fpa"]
 [ext_resource type="PackedScene" uid="uid://bkrltcif54ujh" path="res://gltfs/Untitled.gltf" id="9_ig0lx"]
 [ext_resource type="Script" uid="uid://ck7go7jvhpbl7" path="res://classes/Joint.gd" id="9_lhyfd"]
 [ext_resource type="PackedScene" uid="uid://isxwnl043pgb" path="res://gltfs/Untitled.glb" id="10_13nik"]
 [ext_resource type="Script" uid="uid://cfucm2evixoqa" path="res://skeleton_renderer.gd" id="13_noffw"]
-
-[sub_resource type="PlaceholderMesh" id="PlaceholderMesh_k7vup"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_e6v0q"]
 panorama = ExtResource("6_vfkme")
@@ -36,14 +35,21 @@ volumetric_fog_albedo = Color(0.8586553, 0.9953875, 0.9391962, 1)
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_e6v0q"]
 
+[sub_resource type="PlaceholderMesh" id="PlaceholderMesh_k7vup"]
+
 [sub_resource type="PlaceholderMesh" id="PlaceholderMesh_ig0lx"]
 
-[node name="Main" type="Node3D" unique_id=1595056590]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nrq47"]
+emission_enabled = true
+emission = Color(1, 1, 1, 1)
+emission_energy_multiplier = 30.0
 
-[node name="BoneRenderer" type="MeshInstance3D" parent="." unique_id=1584425700 node_paths=PackedStringArray("skltn")]
-mesh = SubResource("PlaceholderMesh_k7vup")
-script = ExtResource("13_noffw")
-skltn = NodePath("../Target/Skeleton3D")
+[sub_resource type="SphereMesh" id="SphereMesh_gn3aq"]
+material = SubResource("StandardMaterial3D_nrq47")
+radius = 0.06
+height = 0.12
+
+[node name="Main" type="Node3D" unique_id=1595056590]
 
 [node name="Baker" type="Node" parent="." unique_id=953020490 node_paths=PackedStringArray("creator", "target")]
 script = ExtResource("1_e6v0q")
@@ -69,25 +75,58 @@ shape = SubResource("WorldBoundaryShape3D_e6v0q")
 [node name="editor_space" parent="Environment" unique_id=283607448 instance=ExtResource("4_1edov")]
 visible = false
 
+[node name="BoneRenderer" type="MeshInstance3D" parent="Environment" unique_id=1584425700 node_paths=PackedStringArray("skltn")]
+visible = false
+mesh = SubResource("PlaceholderMesh_k7vup")
+script = ExtResource("13_noffw")
+skltn = NodePath("../../Target/Skeleton3D")
+
 [node name="Target" type="Node3D" parent="." unique_id=1691935409]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 100, 0)
 script = ExtResource("6_e6v0q")
 
 [node name="Skeleton3D" type="Skeleton3D" parent="Target" unique_id=1096565119]
+script = ExtResource("7_nrq47")
 
 [node name="Mesh" type="MeshInstance3D" parent="Target/Skeleton3D" unique_id=1210599835]
 transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, 0, 0)
 mesh = SubResource("PlaceholderMesh_ig0lx")
 
-[node name="Algo" type="FABRIK3D" parent="Target/Skeleton3D" unique_id=982279171]
+[node name="IK" type="FABRIK3D" parent="Target/Skeleton3D" unique_id=982279171]
 
-[node name="BoneAttachment3D" type="BoneAttachment3D" parent="Target/Skeleton3D" unique_id=969007155]
+[node name="LookAt" type="LookAtModifier3D" parent="Target/Skeleton3D" unique_id=602295474]
+target_node = NodePath("../../Target")
+
+[node name="Target" type="Marker3D" parent="Target" unique_id=72819658]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8, 10)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Target/Target" unique_id=2025180750]
+mesh = SubResource("SphereMesh_gn3aq")
 
 [node name="creator" type="Node3D" parent="." unique_id=1933058923]
 script = ExtResource("2_j1vrw")
 
+[node name="upper_body" type="Node" parent="creator" unique_id=1828399038 node_paths=PackedStringArray("parent_joint")]
+script = ExtResource("7_ig0lx")
+parent_joint = NodePath("../CorePivot")
+type = 3
+metadata/_custom_type_script = "uid://do6m5yn4i3cnt"
+
+[node name="Untitled" parent="creator/upper_body" unique_id=2077244224 instance=ExtResource("9_ig0lx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.8, 0)
+
+[node name="Joint_right" type="Node3D" parent="creator/upper_body" unique_id=554472301]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6, 10.4, 0)
+script = ExtResource("9_lhyfd")
+metadata/_custom_type_script = "uid://ck7go7jvhpbl7"
+
+[node name="Joint_left" type="Node3D" parent="creator/upper_body" unique_id=1216968304]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 10.4, 0)
+script = ExtResource("9_lhyfd")
+metadata/_custom_type_script = "uid://ck7go7jvhpbl7"
+
 [node name="CorePivot" type="Node3D" parent="creator" unique_id=1334086726]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 6.8, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.8, 0)
 script = ExtResource("9_lhyfd")
 metadata/_custom_type_script = "uid://ck7go7jvhpbl7"
 

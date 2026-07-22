@@ -1,13 +1,13 @@
 class_name Segment extends Node
 
-enum Type {LIMB, HAND, FOOT, LOWER_BODY, UPPER_BODY} 
+enum Type {LIMB, HAND, FOOT, LOWER_BODY, UPPER_BODY, WEAPON} 
 
 @export var parent_joint: Joint
 @export var type: Type
 
 var meshes     : Array[Mesh]
 var transforms : Array[Transform3D]
-var bone_id    : int = -1
+var bone_id    : int  = -1
 
 
 func _ready() -> void:
@@ -28,16 +28,18 @@ func size() -> int:
 	return min(meshes.size(), transforms.size())
 
 
+func get_parent_bone() -> int:
+	if parent_joint.get_parent_segment():
+		return parent_joint.get_parent_segment().bone_id
+	else:
+		return -1
+
+
 func get_parent_transform() -> Transform3D:
-	if parent_joint: return parent_joint.global_transform
-	else: 
-		
+	if parent_joint:
+		return parent_joint.global_transform
+	else:
 		return Transform3D.IDENTITY
-
-
-func get_bone_parent() -> int:
-	if parent_joint.get_parent() is Segment: return parent_joint.get_parent().bone_id
-	else: return -1
 
 
 func get_limb() -> Array[Segment]:

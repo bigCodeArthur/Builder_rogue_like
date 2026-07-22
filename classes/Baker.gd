@@ -11,43 +11,38 @@ var st : SurfaceTool  = SurfaceTool.new()
 ## here is where the player created creation will be baked to as mesh with skeleton.
 @export var target: Target
 
-@onready var target_skeleton : Skeleton3D = $"../Target/Skeleton3D"
-@onready var target_mesh     : MeshInstance3D = $"../Target/Skeleton3D/Mesh"
-@onready var target_algo     : FABRIK3D = $"../Target/Skeleton3D/Algo"
-
 
 func bake() -> void:
 	var baked_mesh := ArrayMesh.new()
-	var segments: Array[Segment] = [creator.get_node("lower_body")]
+	var segments: Array[Segment] = [
+		creator.get_node("lower_body"),
+		creator.get_node("upper_body")
+	]
 
-	target_skeleton.clear_bones()
-	st.begin(Mesh.PRIMITIVE_TRIANGLES)
-
-	for child in creator.get_children():
-		if not child is Segment: 
-			continue
-
-		var segment := child as Segment
-		var HAND = segment.Type.HAND
-		var FOOT = segment.Type.FOOT
-
-		if segment.type == HAND or segment.type == FOOT:
-			segments.append_array(segment.get_limb())
-
-	for i in segments.size(): 
-		segments[i].bone_id = i
+	st.begin(Mesh.PRIMITIVE_TRIANGLES); target.skeleton.clear_bones()
+	segments.append_array(creator.get_segments_limb_ordered())
 
 	for segment in segments:
-		var bone_id := target_skeleton.add_bone(segment.name)
-		target_skeleton.set_bone_parent(bone_id, segment.get_bone_parent())
-		target_skeleton.set_bone_global_pose(bone_id, segment.get_parent_transform())
-		baked_mesh = segment_to_mesh_with_bone(baked_mesh, segment, bone_id)
+		segment.bone_id = target.skeleton.add_bone(segment.name)
+		target.skeleton.set_bone_parent(segment.bone_id, segment.get_parent_bone())
+		target.skeleton.set_bone_global_rest(segment.bone_id, segment.get_parent_transform())
+		baked_mesh = segment_to_mesh_with_bone(baked_mesh, segment, segment.bone_id)
 
-	target.set_mesh(baked_mesh)
-	Helper.save_as_gltf(target)
+	target.skeleton.reset_bone_poses()
+
+	target.mesh_instance.mesh      = baked_mesh
+	target.mesh_instance.skin      = null # reset skin so godot can regenerate it
+	target.mesh_instance.skeleton  = target.mesh_instance.get_path_to(target.skeleton)
+
+	target.look_at_mod.bone_name   = "upper_body"
+	target.look_at_mod.target_node = target.look_at_mod.get_path_to(target.target)
 
 
-func segment_to_mesh_with_bone(mesh: ArrayMesh, segment: Segment, bone: int) -> ArrayMesh:
+func segment_to_mesh_with_bone(
+	mesh: ArrayMesh, 
+	segment: Segment, 
+	bone: int
+) -> ArrayMesh:
 	var offset := creator.global_transform.affine_inverse()
 	for part in segment.size():
 		bake_mesh_to_bone(
@@ -63,8 +58,8 @@ func segment_to_mesh_with_bone(mesh: ArrayMesh, segment: Segment, bone: int) -> 
 func bake_mesh_to_bone(
 	mesh: Mesh, 
 	bone: int, 
-	transform: Transform3D = Transform3D.IDENTITY, 
-	offset: Transform3D = Transform3D.IDENTITY
+	transform: Transform3D, 
+	offset: Transform3D
 ) -> void:
 	var position_offset := offset * transform
 	var normal_offset := position_offset.basis.inverse().transposed()
@@ -72,7 +67,7 @@ func bake_mesh_to_bone(
 	dt.create_from_surface(mesh, 0)
 	st.set_material(BASE_CREATION_MATERIAL)
 
-	for face in dt.get_face_count(): for corner_index in 3: # for all faces and their verts.
+	for face in dt.get_face_count(): for corner_index in 3:
 		var vert := dt.get_face_vertex(face, corner_index)
 		var new_normal := normal_offset * dt.get_vertex_normal(vert)
 		var new_vertex := position_offset * dt.get_vertex(vert)

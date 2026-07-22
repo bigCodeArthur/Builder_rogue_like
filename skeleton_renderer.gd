@@ -24,7 +24,7 @@ func _physics_process(_delta):
 	immediate_mesh.surface_begin(Mesh.PRIMITIVE_LINES)
 
 	for bone in skltn.get_bone_count():
-		var parent := skltn.get_bone_parent(bone)
+		var parent: int = skltn.get_bone_parent(bone)
 		if parent == -1: continue
 		var bone_transform := skltn.global_transform * skltn.get_bone_global_pose(bone)
 		var parent_transform := skltn.global_transform * skltn.get_bone_global_pose(parent)
