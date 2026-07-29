@@ -1,13 +1,14 @@
 extends Node3D
 
 var MOUSE_SENSITIVITY = 0.005
-var creator_pos := Vector3.ZERO
-var animator_pos := Vector3.UP * 100
 var cam_move : bool = false
 var cam_pan : bool = false
 
 @export var baker: Baker
 @export var editor_space: Node3D
+
+@export var target: Target
+@export var creator: Creator
 
 @onready var camera: Camera3D = $Pivot_x/Camera3D
 @onready var pivot_y: Node3D  = self
@@ -15,8 +16,8 @@ var cam_pan : bool = false
 
 
 func _ready() -> void:
-	pivot_y.position = creator_pos
-	editor_space.position = creator_pos
+	pivot_y.position = creator.position
+	editor_space.position = creator.position
 
 
 func _process(_delta: float) -> void:
@@ -50,8 +51,8 @@ func _input(event: InputEvent) -> void:
 func _on_mode_switch_toggled(toggled_on: bool) -> void:
 	if toggled_on: 
 		baker.bake()
-		pivot_y.position = animator_pos
-		editor_space.position = animator_pos
+		pivot_y.position = target.position
+		editor_space.position = target.position
 	else:
-		pivot_y.position = creator_pos
-		editor_space.position = creator_pos
+		pivot_y.position = creator.position
+		editor_space.position = creator.position

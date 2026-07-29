@@ -19,36 +19,50 @@ func bake() -> void:
 		creator.get_node("upper_body")
 	]
 
-	st.begin(Mesh.PRIMITIVE_TRIANGLES); target.skeleton.clear_bones()
+	st.begin(Mesh.PRIMITIVE_TRIANGLES)
+	target.skeleton.clear_bones()
 	segments.append_array(creator.get_segments_limb_ordered())
 
 	for segment in segments:
 		segment.bone_id = target.skeleton.add_bone(segment.name)
-		target.skeleton.set_bone_parent(segment.bone_id, segment.get_parent_bone())
-		target.skeleton.set_bone_global_rest(segment.bone_id, segment.get_parent_transform())
-		baked_mesh = segment_to_mesh_with_bone(baked_mesh, segment, segment.bone_id)
+
+	for segment in segments:
+		target.skeleton.set_bone_parent(
+			segment.bone_id,
+			segment.get_parent_bone()
+		)
+
+	for segment in segments:
+		target.skeleton.set_bone_global_rest(
+			segment.bone_id,
+			segment.get_parent_transform()
+		)
+
+	for segment in segments:
+		baked_mesh = segment_to_mesh_with_bone(
+			baked_mesh,
+			segment,
+			segment.bone_id
+		)
 
 	target.skeleton.reset_bone_poses()
-
-	target.mesh_instance.mesh      = baked_mesh
-	target.mesh_instance.skin      = null # reset skin so godot can regenerate it
-	target.mesh_instance.skeleton  = target.mesh_instance.get_path_to(target.skeleton)
-
-	target.look_at_mod.bone_name   = "upper_body"
-	target.look_at_mod.target_node = target.look_at_mod.get_path_to(target.target)
+	target.mesh_instance.skin = null # reset skin so godot can regenerate it
+	target.mesh_instance.mesh = baked_mesh
+	target.mesh_instance.skeleton = ".."
+	target.set_modifiers()
 
 
 func segment_to_mesh_with_bone(
-	mesh: ArrayMesh, 
-	segment: Segment, 
+	mesh: ArrayMesh,
+	segment: Segment,
 	bone: int
 ) -> ArrayMesh:
 	var offset := creator.global_transform.affine_inverse()
 	for part in segment.size():
 		bake_mesh_to_bone(
-			segment.meshes[part], 
-			bone, 
-			segment.transforms[part], 
+			segment.meshes[part],
+			bone,
+			segment.transforms[part],
 			offset
 		)
 	st.generate_tangents()
@@ -56,9 +70,9 @@ func segment_to_mesh_with_bone(
 
 
 func bake_mesh_to_bone(
-	mesh: Mesh, 
-	bone: int, 
-	transform: Transform3D, 
+	mesh: Mesh,
+	bone: int,
+	transform: Transform3D,
 	offset: Transform3D
 ) -> void:
 	var position_offset := offset * transform

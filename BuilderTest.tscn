@@ -13,7 +13,6 @@
 [ext_resource type="PackedScene" uid="uid://bkrltcif54ujh" path="res://gltfs/Untitled.gltf" id="9_ig0lx"]
 [ext_resource type="Script" uid="uid://ck7go7jvhpbl7" path="res://classes/Joint.gd" id="9_lhyfd"]
 [ext_resource type="PackedScene" uid="uid://isxwnl043pgb" path="res://gltfs/Untitled.glb" id="10_13nik"]
-[ext_resource type="Script" uid="uid://cfucm2evixoqa" path="res://skeleton_renderer.gd" id="13_noffw"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_e6v0q"]
 panorama = ExtResource("6_vfkme")
@@ -33,16 +32,13 @@ ssao_horizon = 0.65
 glow_enabled = true
 volumetric_fog_albedo = Color(0.8586553, 0.9953875, 0.9391962, 1)
 
-[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_e6v0q"]
-
-[sub_resource type="PlaceholderMesh" id="PlaceholderMesh_k7vup"]
-
 [sub_resource type="PlaceholderMesh" id="PlaceholderMesh_ig0lx"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nrq47"]
+albedo_color = Color(1, 0, 0, 1)
 emission_enabled = true
-emission = Color(1, 1, 1, 1)
-emission_energy_multiplier = 30.0
+emission = Color(1, 0, 0, 1)
+emission_energy_multiplier = 10.0
 
 [sub_resource type="SphereMesh" id="SphereMesh_gn3aq"]
 material = SubResource("StandardMaterial3D_nrq47")
@@ -63,23 +59,13 @@ environment = SubResource("Environment_1edov")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment" unique_id=1930909081]
 transform = Transform3D(1, 0, 0, 0, 0.5863724, 0.8100416, 0, -0.8100416, 0.5863724, 0, 0, 12.670316)
 
-[node name="Editor_camera" parent="Environment" unique_id=293338761 node_paths=PackedStringArray("baker", "editor_space") instance=ExtResource("3_1edov")]
+[node name="Editor_camera" parent="Environment" unique_id=293338761 node_paths=PackedStringArray("baker", "editor_space", "target", "creator") instance=ExtResource("3_1edov")]
 baker = NodePath("../../Baker")
 editor_space = NodePath("../editor_space")
-
-[node name="GroundPlane" type="StaticBody3D" parent="Environment" unique_id=756412017]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Environment/GroundPlane" unique_id=1903640723]
-shape = SubResource("WorldBoundaryShape3D_e6v0q")
+target = NodePath("../../Target")
+creator = NodePath("../../creator")
 
 [node name="editor_space" parent="Environment" unique_id=283607448 instance=ExtResource("4_1edov")]
-visible = false
-
-[node name="BoneRenderer" type="MeshInstance3D" parent="Environment" unique_id=1584425700 node_paths=PackedStringArray("skltn")]
-visible = false
-mesh = SubResource("PlaceholderMesh_k7vup")
-script = ExtResource("13_noffw")
-skltn = NodePath("../../Target/Skeleton3D")
 
 [node name="Target" type="Node3D" parent="." unique_id=1691935409]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 100, 0)
@@ -93,14 +79,31 @@ transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, 0, 0)
 mesh = SubResource("PlaceholderMesh_ig0lx")
 
 [node name="IK" type="FABRIK3D" parent="Target/Skeleton3D" unique_id=982279171]
+max_iterations = 5
 
 [node name="LookAt" type="LookAtModifier3D" parent="Target/Skeleton3D" unique_id=602295474]
-target_node = NodePath("../../Target")
+
+[node name="CopyTransformModifier3D" type="CopyTransformModifier3D" parent="Target/Skeleton3D" unique_id=113129119]
 
 [node name="Target" type="Marker3D" parent="Target" unique_id=72819658]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8, 10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.8, 10)
+visible = false
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Target/Target" unique_id=2025180750]
+mesh = SubResource("SphereMesh_gn3aq")
+
+[node name="Target_left" type="Marker3D" parent="Target" unique_id=147323246]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0.6, 0)
+visible = false
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Target/Target_left" unique_id=1401772979]
+mesh = SubResource("SphereMesh_gn3aq")
+
+[node name="Target_right" type="Marker3D" parent="Target" unique_id=2085070634]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0.6, 0)
+visible = false
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Target/Target_right" unique_id=1602334851]
 mesh = SubResource("SphereMesh_gn3aq")
 
 [node name="creator" type="Node3D" parent="." unique_id=1933058923]
