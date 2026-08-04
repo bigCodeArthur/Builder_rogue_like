@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://dkc8ns5fnqd53"]
+
+[ext_resource type="Script" uid="uid://dx0aibpe062o0" path="res://classes/Piece.gd" id="1_m5u1s"]
+
+[node name="PieceBase" type="Node3D" unique_id=315740556]
+script = ExtResource("1_m5u1s")
+metadata/_custom_type_script = "uid://dx0aibpe062o0"

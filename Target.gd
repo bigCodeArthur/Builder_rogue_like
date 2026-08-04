@@ -1,4 +1,4 @@
-class_name Target extends Node3D
+class_name Target extends CharacterBody3D
 
 @onready var mesh_instance : MeshInstance3D = $Skeleton3D/Mesh
 @onready var skeleton      : Skeleton3D = $Skeleton3D
@@ -6,7 +6,6 @@ class_name Target extends Node3D
 @onready var look_at_mod   : LookAtModifier3D = $Skeleton3D/LookAt
 @onready var ik_mod        : FABRIK3D = $Skeleton3D/IK
 @onready var ct_mod        : CopyTransformModifier3D = $Skeleton3D/CopyTransformModifier3D
-
 
 @onready var target        : Marker3D = $Target
 @onready var target_left   : Marker3D = $Target_left
@@ -20,7 +19,7 @@ func _process(delta: float) -> void:
 	target.position.x += upper_dir * delta * 20
 
 	if target.position.x < -10 : upper_dir =  1
-	if target.position.x > 10  : upper_dir = -1
+	if target.position.x >  10 : upper_dir = -1
 
 	target_left.position.y += legs_dir * delta * 3
 	target_right.position.y = target_left.position.y

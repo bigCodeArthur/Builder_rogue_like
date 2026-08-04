@@ -50,5 +50,4 @@ shift={
 [rendering]
 
 rendering_device/driver.windows="d3d12"
-environment/screen_space_reflection/half_size=false
 anti_aliasing/quality/screen_space_aa=1

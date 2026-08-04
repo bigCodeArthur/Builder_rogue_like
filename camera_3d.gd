@@ -2,11 +2,10 @@ extends Node3D
 
 var MOUSE_SENSITIVITY = 0.005
 var cam_move : bool = false
-var cam_pan : bool = false
+var cam_pan  : bool = false
+var thread   := Thread.new()
 
-@export var baker: Baker
 @export var editor_space: Node3D
-
 @export var target: Target
 @export var creator: Creator
 
@@ -24,13 +23,14 @@ func _process(_delta: float) -> void:
 	if Input.is_action_pressed("cam_move"):
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 		cam_move = true
-
 	elif Input.is_action_just_released("cam_move"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 		cam_move = false
 
-	if Input.is_action_pressed("shift"): cam_pan = true
-	else: cam_pan = false
+	if Input.is_action_pressed("shift"):
+		cam_pan = true
+	else:
+		cam_pan = false
 
 	if Input.is_action_just_pressed("zoom_in"):  camera.position.z -= 1
 	if Input.is_action_just_pressed("zoom_out"): camera.position.z += 1
@@ -50,7 +50,7 @@ func _input(event: InputEvent) -> void:
 
 func _on_mode_switch_toggled(toggled_on: bool) -> void:
 	if toggled_on: 
-		baker.bake()
+		Baker.bake(creator, target)
 		pivot_y.position = target.position
 		editor_space.position = target.position
 	else:

@@ -2,17 +2,10 @@ class_name Baker extends Node
 
 const BASE_CREATION_MATERIAL = preload("uid://brvlbsaj0tib6")
 
-var dt : MeshDataTool = MeshDataTool.new()
-var st : SurfaceTool  = SurfaceTool.new()
+static var dt : MeshDataTool = MeshDataTool.new()
+static var st : SurfaceTool  = SurfaceTool.new()
 
-## creator is a node that allows the player to create a creation.
-@export var creator: Creator
-
-## here is where the player created creation will be baked to as mesh with skeleton.
-@export var target: Target
-
-
-func bake() -> void:
+static func bake(creator: Creator, target: Target) -> void:
 	var baked_mesh := ArrayMesh.new()
 	var segments: Array[Segment] = [
 		creator.get_node("lower_body"),
@@ -42,7 +35,8 @@ func bake() -> void:
 		baked_mesh = segment_to_mesh_with_bone(
 			baked_mesh,
 			segment,
-			segment.bone_id
+			segment.bone_id,
+			creator
 		)
 
 	target.skeleton.reset_bone_poses()
@@ -51,11 +45,14 @@ func bake() -> void:
 	target.mesh_instance.skeleton = ".."
 	target.set_modifiers()
 
+	Helper.save_as_scn(target)
 
-func segment_to_mesh_with_bone(
+
+static func segment_to_mesh_with_bone(
 	mesh: ArrayMesh,
 	segment: Segment,
-	bone: int
+	bone: int,
+	creator: Creator
 ) -> ArrayMesh:
 	var offset := creator.global_transform.affine_inverse()
 	for part in segment.size():
@@ -69,7 +66,7 @@ func segment_to_mesh_with_bone(
 	return st.commit(mesh)
 
 
-func bake_mesh_to_bone(
+static func bake_mesh_to_bone(
 	mesh: Mesh,
 	bone: int,
 	transform: Transform3D,

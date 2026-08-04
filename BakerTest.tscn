@@ -1,21 +1,19 @@
 [gd_scene format=3 uid="uid://b4qbi5wo2o4g2"]
 
-[ext_resource type="Script" uid="uid://5tsxj2gavqfn" path="res://classes/Baker.gd" id="1_e6v0q"]
-[ext_resource type="Script" uid="uid://buqkdsglachok" path="res://classes/Creator.gd" id="2_j1vrw"]
-[ext_resource type="PackedScene" uid="uid://cmbxadjn6kp3" path="res://gltfs/Untitled2.gltf" id="2_ml37p"]
-[ext_resource type="PackedScene" uid="uid://buremw4pnhd7t" path="res://editor_camera.tscn" id="3_1edov"]
-[ext_resource type="PackedScene" uid="uid://ckufxi4lvaifi" path="res://gltfs/editor_space.tscn" id="4_1edov"]
-[ext_resource type="Script" uid="uid://olorsgowbwgq" path="res://Target.gd" id="6_e6v0q"]
-[ext_resource type="Texture2D" uid="uid://bfx12selscvgq" path="res://textures/citrus_orchard_puresky_2k.exr" id="6_vfkme"]
-[ext_resource type="Script" uid="uid://do6m5yn4i3cnt" path="res://classes/Segment.gd" id="7_ig0lx"]
-[ext_resource type="Script" uid="uid://bqixp3wjpcfs5" path="res://skeleton_3d.gd" id="7_nrq47"]
-[ext_resource type="Script" uid="uid://bq5hx04k73p15" path="res://mode_switch.gd" id="8_t1fpa"]
-[ext_resource type="PackedScene" uid="uid://bkrltcif54ujh" path="res://gltfs/Untitled.gltf" id="9_ig0lx"]
-[ext_resource type="Script" uid="uid://ck7go7jvhpbl7" path="res://classes/Joint.gd" id="9_lhyfd"]
-[ext_resource type="PackedScene" uid="uid://isxwnl043pgb" path="res://gltfs/Untitled.glb" id="10_13nik"]
+[ext_resource type="Texture2D" uid="uid://bfx12selscvgq" path="res://textures/citrus_orchard_puresky_2k.exr" id="1_6ql36"]
+[ext_resource type="PackedScene" uid="uid://buremw4pnhd7t" path="res://editor_camera.tscn" id="2_7qy4i"]
+[ext_resource type="PackedScene" uid="uid://ckufxi4lvaifi" path="res://gltfs/editor_space.tscn" id="3_hnib4"]
+[ext_resource type="PackedScene" uid="uid://bvovjha1gim7y" path="res://scenes/target_base.tscn" id="4_wo2jc"]
+[ext_resource type="Script" uid="uid://buqkdsglachok" path="res://classes/Creator.gd" id="6_ykd0q"]
+[ext_resource type="Script" uid="uid://do6m5yn4i3cnt" path="res://classes/Segment.gd" id="7_ywvg4"]
+[ext_resource type="PackedScene" uid="uid://bkrltcif54ujh" path="res://gltfs/Untitled.gltf" id="8_3xup1"]
+[ext_resource type="Script" uid="uid://ck7go7jvhpbl7" path="res://classes/Joint.gd" id="9_01vvi"]
+[ext_resource type="PackedScene" uid="uid://cmbxadjn6kp3" path="res://gltfs/Untitled2.gltf" id="10_x7yty"]
+[ext_resource type="PackedScene" uid="uid://isxwnl043pgb" path="res://gltfs/Untitled.glb" id="11_a0b2c"]
+[ext_resource type="Script" uid="uid://bq5hx04k73p15" path="res://mode_switch.gd" id="12_wos7i"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_e6v0q"]
-panorama = ExtResource("6_vfkme")
+panorama = ExtResource("1_6ql36")
 
 [sub_resource type="Sky" id="Sky_t1fpa"]
 sky_material = SubResource("PanoramaSkyMaterial_e6v0q")
@@ -32,26 +30,7 @@ ssao_horizon = 0.65
 glow_enabled = true
 volumetric_fog_albedo = Color(0.8586553, 0.9953875, 0.9391962, 1)
 
-[sub_resource type="PlaceholderMesh" id="PlaceholderMesh_ig0lx"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nrq47"]
-albedo_color = Color(1, 0, 0, 1)
-emission_enabled = true
-emission = Color(1, 0, 0, 1)
-emission_energy_multiplier = 10.0
-
-[sub_resource type="SphereMesh" id="SphereMesh_gn3aq"]
-material = SubResource("StandardMaterial3D_nrq47")
-radius = 0.06
-height = 0.12
-
-[node name="Main" type="Node3D" unique_id=1595056590]
-
-[node name="Baker" type="Node" parent="." unique_id=953020490 node_paths=PackedStringArray("creator", "target")]
-script = ExtResource("1_e6v0q")
-creator = NodePath("../creator")
-target = NodePath("../Target")
-metadata/_custom_type_script = "uid://5tsxj2gavqfn"
+[node name="Main" type="Node" unique_id=1591888919]
 
 [node name="Environment" type="WorldEnvironment" parent="." unique_id=1556506300]
 environment = SubResource("Environment_1edov")
@@ -59,167 +38,130 @@ environment = SubResource("Environment_1edov")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="Environment" unique_id=1930909081]
 transform = Transform3D(1, 0, 0, 0, 0.5863724, 0.8100416, 0, -0.8100416, 0.5863724, 0, 0, 12.670316)
 
-[node name="Editor_camera" parent="Environment" unique_id=293338761 node_paths=PackedStringArray("baker", "editor_space", "target", "creator") instance=ExtResource("3_1edov")]
-baker = NodePath("../../Baker")
+[node name="Editor_camera" parent="Environment" unique_id=293338761 node_paths=PackedStringArray("editor_space", "target", "creator") instance=ExtResource("2_7qy4i")]
 editor_space = NodePath("../editor_space")
 target = NodePath("../../Target")
 creator = NodePath("../../creator")
 
-[node name="editor_space" parent="Environment" unique_id=283607448 instance=ExtResource("4_1edov")]
+[node name="editor_space" parent="Environment" unique_id=283607448 instance=ExtResource("3_hnib4")]
 
-[node name="Target" type="Node3D" parent="." unique_id=1691935409]
+[node name="Target" parent="." unique_id=1081661008 instance=ExtResource("4_wo2jc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 100, 0)
-script = ExtResource("6_e6v0q")
-
-[node name="Skeleton3D" type="Skeleton3D" parent="Target" unique_id=1096565119]
-script = ExtResource("7_nrq47")
-
-[node name="Mesh" type="MeshInstance3D" parent="Target/Skeleton3D" unique_id=1210599835]
-transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, 0, 0)
-mesh = SubResource("PlaceholderMesh_ig0lx")
-
-[node name="IK" type="FABRIK3D" parent="Target/Skeleton3D" unique_id=982279171]
-max_iterations = 5
-
-[node name="LookAt" type="LookAtModifier3D" parent="Target/Skeleton3D" unique_id=602295474]
-
-[node name="CopyTransformModifier3D" type="CopyTransformModifier3D" parent="Target/Skeleton3D" unique_id=113129119]
-
-[node name="Target" type="Marker3D" parent="Target" unique_id=72819658]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.8, 10)
-visible = false
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Target/Target" unique_id=2025180750]
-mesh = SubResource("SphereMesh_gn3aq")
-
-[node name="Target_left" type="Marker3D" parent="Target" unique_id=147323246]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0.6, 0)
-visible = false
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Target/Target_left" unique_id=1401772979]
-mesh = SubResource("SphereMesh_gn3aq")
-
-[node name="Target_right" type="Marker3D" parent="Target" unique_id=2085070634]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0.6, 0)
-visible = false
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Target/Target_right" unique_id=1602334851]
-mesh = SubResource("SphereMesh_gn3aq")
 
 [node name="creator" type="Node3D" parent="." unique_id=1933058923]
-script = ExtResource("2_j1vrw")
+script = ExtResource("6_ykd0q")
 
 [node name="upper_body" type="Node" parent="creator" unique_id=1828399038 node_paths=PackedStringArray("parent_joint")]
-script = ExtResource("7_ig0lx")
+script = ExtResource("7_ywvg4")
 parent_joint = NodePath("../CorePivot")
 type = 3
 metadata/_custom_type_script = "uid://do6m5yn4i3cnt"
 
-[node name="Untitled" parent="creator/upper_body" unique_id=2077244224 instance=ExtResource("9_ig0lx")]
+[node name="Untitled" parent="creator/upper_body" unique_id=2077244224 instance=ExtResource("8_3xup1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.8, 0)
 
 [node name="Joint_right" type="Node3D" parent="creator/upper_body" unique_id=554472301]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.6, 10.4, 0)
-script = ExtResource("9_lhyfd")
+script = ExtResource("9_01vvi")
 metadata/_custom_type_script = "uid://ck7go7jvhpbl7"
 
 [node name="Joint_left" type="Node3D" parent="creator/upper_body" unique_id=1216968304]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6, 10.4, 0)
-script = ExtResource("9_lhyfd")
+script = ExtResource("9_01vvi")
 metadata/_custom_type_script = "uid://ck7go7jvhpbl7"
 
 [node name="CorePivot" type="Node3D" parent="creator" unique_id=1334086726]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.8, 0)
-script = ExtResource("9_lhyfd")
+script = ExtResource("9_01vvi")
 metadata/_custom_type_script = "uid://ck7go7jvhpbl7"
 
 [node name="lower_body" type="Node" parent="creator" unique_id=1449885389 node_paths=PackedStringArray("parent_joint")]
-script = ExtResource("7_ig0lx")
+script = ExtResource("7_ywvg4")
 parent_joint = NodePath("../CorePivot")
 type = 3
 metadata/_custom_type_script = "uid://do6m5yn4i3cnt"
 
-[node name="Untitled" parent="creator/lower_body" unique_id=771146992 instance=ExtResource("9_ig0lx")]
+[node name="Untitled" parent="creator/lower_body" unique_id=771146992 instance=ExtResource("8_3xup1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 7.8, 0)
 
 [node name="Joint_right" type="Node3D" parent="creator/lower_body" unique_id=1479837671]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 6.4, 0)
-script = ExtResource("9_lhyfd")
+script = ExtResource("9_01vvi")
 metadata/_custom_type_script = "uid://ck7go7jvhpbl7"
 
 [node name="Joint_left" type="Node3D" parent="creator/lower_body" unique_id=1664412451]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 6.4, 0)
-script = ExtResource("9_lhyfd")
+script = ExtResource("9_01vvi")
 metadata/_custom_type_script = "uid://ck7go7jvhpbl7"
 
 [node name="Right" type="Node" parent="creator" unique_id=916820169 node_paths=PackedStringArray("parent_joint")]
-script = ExtResource("7_ig0lx")
+script = ExtResource("7_ywvg4")
 parent_joint = NodePath("../lower_body/Joint_right")
 metadata/_custom_type_script = "uid://do6m5yn4i3cnt"
 
-[node name="Untitled" parent="creator/Right" unique_id=1831973438 instance=ExtResource("2_ml37p")]
+[node name="Untitled" parent="creator/Right" unique_id=1831973438 instance=ExtResource("10_x7yty")]
 transform = Transform3D(1, 0, 0, 0, 0.99999976, 0, 0, 0, 0.99999976, -0.6, 4.999999, 0)
 
 [node name="Joint" type="Node3D" parent="creator/Right" unique_id=718341436]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 3.5000002, 0.4)
-script = ExtResource("9_lhyfd")
+script = ExtResource("9_01vvi")
 metadata/_custom_type_script = "uid://ck7go7jvhpbl7"
 
 [node name="Left" type="Node" parent="creator" unique_id=638920956 node_paths=PackedStringArray("parent_joint")]
-script = ExtResource("7_ig0lx")
+script = ExtResource("7_ywvg4")
 parent_joint = NodePath("../lower_body/Joint_left")
 metadata/_custom_type_script = "uid://do6m5yn4i3cnt"
 
-[node name="Untitled" parent="creator/Left" unique_id=1517952868 instance=ExtResource("2_ml37p")]
+[node name="Untitled" parent="creator/Left" unique_id=1517952868 instance=ExtResource("10_x7yty")]
 transform = Transform3D(1, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0.6, 5, 0)
 
 [node name="Joint" type="Node3D" parent="creator/Left" unique_id=436232723]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 3.5000002, 0.4)
-script = ExtResource("9_lhyfd")
+script = ExtResource("9_01vvi")
 metadata/_custom_type_script = "uid://ck7go7jvhpbl7"
 
 [node name="Right2" type="Node" parent="creator" unique_id=1668320607 node_paths=PackedStringArray("parent_joint")]
-script = ExtResource("7_ig0lx")
+script = ExtResource("7_ywvg4")
 parent_joint = NodePath("../Right/Joint")
 metadata/_custom_type_script = "uid://do6m5yn4i3cnt"
 
-[node name="Untitled" parent="creator/Right2" unique_id=1142334357 instance=ExtResource("2_ml37p")]
+[node name="Untitled" parent="creator/Right2" unique_id=1142334357 instance=ExtResource("10_x7yty")]
 transform = Transform3D(1, 0, 0, 0, 0.99999976, 0, 0, 0, 0.99999976, -0.6, 2, 0)
 
 [node name="Joint" type="Node3D" parent="creator/Right2" unique_id=2018910713]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0.60000014, 0)
-script = ExtResource("9_lhyfd")
+script = ExtResource("9_01vvi")
 metadata/_custom_type_script = "uid://ck7go7jvhpbl7"
 
 [node name="Left2" type="Node" parent="creator" unique_id=457219000 node_paths=PackedStringArray("parent_joint")]
-script = ExtResource("7_ig0lx")
+script = ExtResource("7_ywvg4")
 parent_joint = NodePath("../Left/Joint")
 metadata/_custom_type_script = "uid://do6m5yn4i3cnt"
 
-[node name="Untitled" parent="creator/Left2" unique_id=1243563208 instance=ExtResource("2_ml37p")]
+[node name="Untitled" parent="creator/Left2" unique_id=1243563208 instance=ExtResource("10_x7yty")]
 transform = Transform3D(1, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 0.6, 2, 0)
 
 [node name="Joint" type="Node3D" parent="creator/Left2" unique_id=626924174]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0.60000014, 0)
-script = ExtResource("9_lhyfd")
+script = ExtResource("9_01vvi")
 metadata/_custom_type_script = "uid://ck7go7jvhpbl7"
 
 [node name="Right_foot" type="Node" parent="creator" unique_id=1596948768 node_paths=PackedStringArray("parent_joint")]
-script = ExtResource("7_ig0lx")
+script = ExtResource("7_ywvg4")
 parent_joint = NodePath("../Right2/Joint")
 type = 2
 metadata/_custom_type_script = "uid://do6m5yn4i3cnt"
 
-[node name="Untitled" parent="creator/Right_foot" unique_id=1798361034 instance=ExtResource("10_13nik")]
+[node name="Untitled" parent="creator/Right_foot" unique_id=1798361034 instance=ExtResource("11_a0b2c")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0, 0)
 
 [node name="Left_foot" type="Node" parent="creator" unique_id=247975622 node_paths=PackedStringArray("parent_joint")]
-script = ExtResource("7_ig0lx")
+script = ExtResource("7_ywvg4")
 parent_joint = NodePath("../Left2/Joint")
 type = 2
 metadata/_custom_type_script = "uid://do6m5yn4i3cnt"
 
-[node name="Untitled" parent="creator/Left_foot" unique_id=953304348 instance=ExtResource("10_13nik")]
+[node name="Untitled" parent="creator/Left_foot" unique_id=953304348 instance=ExtResource("11_a0b2c")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0, 0)
 
 [node name="UI" type="Control" parent="." unique_id=1276930379]
@@ -243,7 +185,7 @@ offset_right = -16.0
 offset_bottom = -13.0
 toggle_mode = true
 text = "animator"
-script = ExtResource("8_t1fpa")
+script = ExtResource("12_wos7i")
 
 [connection signal="toggled" from="UI/ModeSwitch" to="Environment/Editor_camera" method="_on_mode_switch_toggled"]
 [connection signal="toggled" from="UI/ModeSwitch" to="UI/ModeSwitch" method="_on_toggled"]

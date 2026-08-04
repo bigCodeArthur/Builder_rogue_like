@@ -6,4 +6,3 @@ vertex_color_is_srgb = true
 metallic = 1.0
 roughness = 0.0
 clearcoat_enabled = true
-clearcoat_roughness = 0.0

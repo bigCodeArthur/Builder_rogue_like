@@ -2,10 +2,28 @@
 
 [ext_resource type="PackedScene" uid="uid://cwxxg2kuk7jai" path="res://gltfs/editor_space.glb" id="1_nhd6v"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nhd6v"]
+albedo_color = Color(3.3691526e-06, 0.45666027, 0.45666057, 1)
+metallic = 1.0
+roughness = 0.0
+clearcoat_roughness = 0.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_k7vup"]
+material = SubResource("StandardMaterial3D_nhd6v")
+top_radius = 10000.0
+bottom_radius = 104.59
+cap_bottom = false
+
 [node name="editor_space" unique_id=283607448 instance=ExtResource("1_nhd6v")]
 
-[node name="floor" parent="." index="0" unique_id=2092147549]
+[node name="floor" parent="." index="0" unique_id=331198440]
+visible = false
 layers = 2
 
-[node name="walls" parent="." index="1" unique_id=203317471]
+[node name="walls" parent="." index="1" unique_id=119732465]
+visible = false
 layers = 2
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." index="2" unique_id=727057091]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+mesh = SubResource("CylinderMesh_k7vup")

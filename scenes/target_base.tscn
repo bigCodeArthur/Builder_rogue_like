@@ -1,0 +1,60 @@
+[gd_scene format=3 uid="uid://bvovjha1gim7y"]
+
+[ext_resource type="Script" uid="uid://olorsgowbwgq" path="res://Target.gd" id="1_08g53"]
+[ext_resource type="Script" uid="uid://bqixp3wjpcfs5" path="res://skeleton_3d.gd" id="2_vpuha"]
+
+[sub_resource type="PlaceholderMesh" id="PlaceholderMesh_ig0lx"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_nrq47"]
+albedo_color = Color(1, 0, 0, 1)
+emission_enabled = true
+emission = Color(1, 0, 0, 1)
+emission_energy_multiplier = 10.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_gn3aq"]
+material = SubResource("StandardMaterial3D_nrq47")
+radius = 0.06
+height = 0.12
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_k7vup"]
+
+[node name="Target" type="CharacterBody3D" unique_id=1081661008]
+script = ExtResource("1_08g53")
+
+[node name="Skeleton3D" type="Skeleton3D" parent="." unique_id=635475729]
+script = ExtResource("2_vpuha")
+
+[node name="Mesh" type="MeshInstance3D" parent="Skeleton3D" unique_id=288937735]
+transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, 0, 0, 0)
+mesh = SubResource("PlaceholderMesh_ig0lx")
+
+[node name="IK" type="FABRIK3D" parent="Skeleton3D" unique_id=629823238]
+max_iterations = 5
+
+[node name="LookAt" type="LookAtModifier3D" parent="Skeleton3D" unique_id=1187441155]
+
+[node name="CopyTransformModifier3D" type="CopyTransformModifier3D" parent="Skeleton3D" unique_id=481801335]
+
+[node name="Target" type="Marker3D" parent="." unique_id=512785702]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.8, 10)
+visible = false
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Target" unique_id=1743033432]
+mesh = SubResource("SphereMesh_gn3aq")
+
+[node name="Target_left" type="Marker3D" parent="." unique_id=1591019473]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0.6, 0)
+visible = false
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Target_left" unique_id=610037388]
+mesh = SubResource("SphereMesh_gn3aq")
+
+[node name="Target_right" type="Marker3D" parent="." unique_id=906342712]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.6, 0.6, 0)
+visible = false
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Target_right" unique_id=490922512]
+mesh = SubResource("SphereMesh_gn3aq")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1278581608]
+shape = SubResource("CapsuleShape3D_k7vup")

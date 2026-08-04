@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://b0kx6waorhbjh"]
+
+[ext_resource type="Script" uid="uid://buqkdsglachok" path="res://classes/Creator.gd" id="1_ervht"]
+[ext_resource type="Script" uid="uid://do6m5yn4i3cnt" path="res://classes/Segment.gd" id="2_jwwsp"]
+
+[node name="CreatorBase" type="Node3D" unique_id=683754586]
+script = ExtResource("1_ervht")
+metadata/_custom_type_script = "uid://buqkdsglachok"
+
+[node name="UpperBody" type="Node" parent="." unique_id=665448773]
+script = ExtResource("2_jwwsp")
+metadata/_custom_type_script = "uid://do6m5yn4i3cnt"
+
+[node name="LowerBody" type="Node" parent="." unique_id=1299922734]
+script = ExtResource("2_jwwsp")
+metadata/_custom_type_script = "uid://do6m5yn4i3cnt"
